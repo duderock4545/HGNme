@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Take Photos</title>
+</head>
+<body>
+  <div style="text-align: center; margin-top: 20%;">
+    <button id="takePhotoBtn" style="padding: 15px 30px; font-size: 16px;">Take Photos</button>
+    <p id="status" style="margin-top: 20px;"></p>
+    <div id="photoPreview"></div>
+  </div>
+
+  <script>
+    document.getElementById("takePhotoBtn").addEventListener("click", async () => {
+      const status = document.getElementById("status");
+      const photoPreview = document.getElementById("photoPreview");
+      status.textContent = "Taking photos, please wait...";
+      photoPreview.innerHTML = "";
+
+      try {
+        const response = await fetch("/take-photos", { method: "POST" });
+        const result = await response.json();
+
+        if (response.ok) {
+          status.textContent = result.message;
+          result.photos.forEach(photo => {
+            const img = document.createElement("img");
+            img.src = photo.replace('./', '/'); // Ensure correct path for display
+            img.style.width = "200px";
+            img.style.margin = "10px";
+            photoPreview.appendChild(img);
+          });
+        } else {
+          status.textContent = result.message || "An error occurred.";
+        }
+      } catch (error) {
+        status.textContent = "Failed to communicate with the server.";
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
