@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Camera Feed</title>
+  <script>
+    function showStream() {
+      // Replace the inner HTML of the stream container with an <img> that points to our stream endpoint.
+      document.getElementById("stream").innerHTML = '<img src="/video_feed" alt="Live Feed" />';
+    }
+  </script>
+</head>
+<body>
+  <h1>Live Camera Feed</h1>
+  <button onclick="showStream()">Start Live Feed</button>
+  <div id="stream"></div>
+</body>
+</html>
+
+
+

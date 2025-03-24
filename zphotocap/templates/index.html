@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Photo Capture with Directions</title>
+</head>
+<body>
+   <div style="text-align: center; margin-top: 10%;">
+       <h2>Photo Capture with Directions</h2>
+       <input type="text" id="photoName" placeholder="Enter name for photos" style="padding:5px; font-size:16px;">
+       <button onclick="startPhotoCapture()" style="padding:10px 20px; font-size:16px;">Capture Photos</button>
+       <p id="status" style="margin-top:20px; font-size:18px;"></p>
+       <div id="photoPreview" style="margin-top:20px;"></div>
+   </div>
+
+   <script>
+       function startPhotoCapture() {
+           const name = document.getElementById('photoName').value;
+           if (!name) {
+               alert('Please enter a name.');
+               return;
+           }
+           document.getElementById('status').innerText = 'Starting photo capture...';
+           document.getElementById('photoPreview').innerHTML = ''; // Clear previous photos
+           
+           const eventSource = new EventSource(`/take-photos-stream?name=${encodeURIComponent(name)}`);
+           
+           eventSource.onmessage = function(event) {
+               document.getElementById('status').innerText = event.data;
+               if (event.data.includes("Photo capture complete!")) {
+                   eventSource.close();
+                   // Display captured photos (assuming 5 photos)
+                   let previewDiv = document.getElementById('photoPreview');
+                   previewDiv.innerHTML = "";
+                   for (let i = 1; i <= 5; i++) {
+                       let img = document.createElement('img');
+                       img.src = `/photos/${name}_${i}.jpg`;
+                       img.style.width = '200px';
+                       img.style.margin = '10px';
+                       previewDiv.appendChild(img);
+                   }
+               }
+           };
+
+           eventSource.onerror = function() {
+               document.getElementById('status').innerText = 'An error occurred during photo capture.';
+               eventSource.close();
+           };
+       }
+   </script>
+</body>
+</html>
+
+
+

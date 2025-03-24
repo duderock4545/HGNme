@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Face Detection Live Feed (Jetson)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap (optional) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/style/face-detection.css">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!-- Face API (download face-api.min.js and place in static/js/) -->
+  <script src="/static/js/face-api.min.js"></script>
+</head>
+<body>
+  <div class="container text-center mt-4">
+    <h2>Face Detection Live Feed (Jetson)</h2>
+    <button id="startBtn" class="btn btn-primary">Start Live Feed</button>
+    <!-- Feed container initially hidden; centered with fixed width -->
+    <div id="feedContainer" style="display: none;">
+      <!-- MJPEG stream from /video_feed -->
+      <img id="liveFeed" src="/video_feed" alt="Live Feed">
+      <!-- Overlay positioned absolutely over the live feed -->
+      <div id="overlay">
+        <div id="goalBox"></div>
+        <div id="faceBox" class="faceBox" style="display: none;"></div>
+      </div>
+      <!-- Instruction overlay below the live feed -->
+      <div id="instruction" style="margin-top: 10px; font-size: 20px; font-weight: bold;"></div>
+    </div>
+  </div>
+  <!-- Custom JS for face detection -->
+  <script src="/static/js/face-detection.js"></script>
+</body>
+</html>
+
+
+
+
+
